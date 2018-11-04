@@ -1,0 +1,46 @@
+<div class="navbar-dark bg-light py-3">
+        <h3 class="text-center">Approved Suppliers</h3>
+</div>
+
+    
+<div class="container" *ngIf="(approvedSuppliers$ | async) as approvedSuppliers">
+    <div class="row">
+        <div class="offset-3 col-6">
+            <div class="w-50 mx-auto" *ngIf="approvedSuppliers.params as params">
+                <p>
+                    <span> By : </span>
+                    <span class="mx-2" *ngIf="params.processName"> Process Name - {{params.processName}}</span>
+                    <span class="mx-2" *ngIf="params.standardName"> Standard Name - {{params.standardName}}</span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="suppliers-table-container table-shadow m-4">
+    <mat-table #table [dataSource]="dataSource" matSort>
+
+        <!-- Position Column -->
+        <ng-container matColumnDef="position">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> No. </mat-header-cell>
+            <mat-cell *matCellDef="let supplier; let i = index"> {{i+1}} </mat-cell>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="supplierName">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Supplier Name </mat-header-cell>
+            <mat-cell *matCellDef="let supplier">
+                <span> {{supplier.supplierName}} </span>
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="supplierNumber">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Supplier Number </mat-header-cell>
+            <mat-cell *matCellDef="let supplier"> {{supplier.supplierNumber}} </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+</div>

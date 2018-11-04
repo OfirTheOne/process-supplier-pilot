@@ -1,0 +1,191 @@
+<div class="navbar-dark bg-light py-3">
+    <h3 class="text-center">Approved Process Sources</h3>
+</div>
+
+<!-- filter bar -->
+<mat-expansion-panel>
+    <mat-expansion-panel-header>
+        <mat-panel-title>
+            <span class="ml-4 mr-2"> Filter </span> <span class="filter-icon"></span>
+        </mat-panel-title>
+        <mat-panel-description>
+        </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <!-- This is the primary content of the panel. -->
+    <div class="border border-light mx-2 mt-2">
+        <div class=" my-2 mx-2 navbar-dark bg-light">
+            <form [formGroup]="filterForm" class="example-form">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-3">
+                            <mat-form-field class="example-full-width">
+                                <input formControlName="supplierName" matInput placeholder="Supplier Name">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-3">
+                            <mat-form-field class="example-full-width">
+                                <input formControlName="supplierNumber" matInput placeholder="Supplier Number">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-3">
+                            <mat-form-field class="example-full-width">
+                                <input formControlName="standardName" matInput placeholder="Standard Name">
+                            </mat-form-field>
+                        </div>
+                        <div class="col-3">
+                            <mat-form-field class="example-full-width">
+                                <input formControlName="processName" matInput placeholder="Process Name">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <div formGroupName="flags" class="container">
+                    <div class="row">
+                        <div class="col-3">
+                            <mat-checkbox formControlName="elop">Elop</mat-checkbox>
+                        </div>
+                        <div class="col-3">
+                            <mat-checkbox formControlName="NADCAP">NADCAP</mat-checkbox>
+                        </div>
+                        <div class="col-3">
+                            <mat-checkbox formControlName="AS9100">AS9100</mat-checkbox>
+                        </div>
+                        <div class="col-3">
+                            <mat-checkbox formControlName="elisra">Elisra</mat-checkbox>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3">
+                            <mat-checkbox formControlName="drone">Drone</mat-checkbox>
+                        </div>
+                        <div class="col-3">
+                            <mat-checkbox formControlName="kinetics">Kinetics</mat-checkbox>
+                        </div>
+                        <div class="col-3">
+                            <mat-checkbox formControlName="aircraft">Aircraft</mat-checkbox>
+                        </div>
+                        <div class="col-3">
+                            <mat-checkbox formControlName="land">Land</mat-checkbox>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-2 py-2">
+                            <!-- <div class="filter-icon"></div> -->
+                            <button (click)="applyFilter()" mat-flat-button color="primary">Apply Filter</button>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</mat-expansion-panel>
+
+
+
+<div class="process-standard-table-container table-shadow m-4">
+    <mat-table #table [dataSource]="dataSource" matSort>
+
+        <!-- Position Column -->
+        <ng-container matColumnDef="position">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> No. </mat-header-cell>
+            <mat-cell *matCellDef="let processStandard; let i = index"> {{i}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="supplierName">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Supplier Name </mat-header-cell>
+            <mat-cell *matCellDef="let processStandard">
+                <span> {{processStandard.supplierName}}</span>
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="standardName">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Standard Name </mat-header-cell>
+            <mat-cell *matCellDef="let processStandard">
+                <span class="click-cursor" (click)="onGoSuppliersPageByStandardName(processStandard, $event)">
+                    {{processStandard.standardName}}
+                </span>
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="processName">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Process Name </mat-header-cell>
+            <mat-cell *matCellDef="let processStandard">
+                <span class="click-cursor" (click)="onGoSuppliersPageByProcessName(processStandard, $event)">
+                    {{processStandard.processName}}
+                </span>
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="supplierNumber">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Supplier Number </mat-header-cell>
+            <mat-cell *matCellDef="let processStandard"> {{processStandard.supplierNumber}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="comments">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Comments </mat-header-cell>
+            <mat-cell *matCellDef="let processStandard"> {{processStandard.comments}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="elop">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Elop </mat-header-cell>
+            <mat-cell *matCellDef="let processStandard">
+                <span [ngClass]="{'check-circle-icon' : processStandard.elop}"></span>
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="NADCAP">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> NADCAP </mat-header-cell>
+            <mat-cell *matCellDef="let processStandard">
+                <span [ngClass]="{'check-circle-icon' : processStandard.NADCAP}"></span>
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="AS9100">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> AS9100 </mat-header-cell>
+            <mat-cell *matCellDef="let processStandard">
+                <span [ngClass]="{'check-circle-icon' : processStandard.AS9100}"></span>
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="aircraft">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Aircraft </mat-header-cell>
+            <mat-cell *matCellDef="let processStandard">
+                <span [ngClass]="{'check-circle-icon' : processStandard.aircraft}"></span>
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="land">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Land </mat-header-cell>
+            <mat-cell *matCellDef="let processStandard">
+                <span [ngClass]="{'check-circle-icon' : processStandard.land}"></span>
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="drone">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Drone </mat-header-cell>
+            <mat-cell *matCellDef="let processStandard">
+                <span [ngClass]="{'check-circle-icon' : processStandard.drone}"></span>
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="elisra">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Elisra </mat-header-cell>
+            <mat-cell *matCellDef="let processStandard">
+                <span [ngClass]="{'check-circle-icon' : processStandard.elisra}"></span>
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="kinetics">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Kinetics </mat-header-cell>
+            <mat-cell *matCellDef="let processStandard">
+                <span [ngClass]="{'check-circle-icon' : processStandard.kinetics}"></span>
+            </mat-cell>
+        </ng-container>
+
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+</div>
