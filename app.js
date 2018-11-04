@@ -4,7 +4,7 @@ const path = require('path');
 
 const app = express();
 
-app.use(express.static(path.join(__dirname, 'dist')));
+app.use(express.static(path.join(__dirname, 'dist/process-supplier-pilot')));
 
 app.get('/*', (req, res) => {
     res.sendFile(path.join(__dirname, 'dist/process-supplier-pilot/index.html'));
